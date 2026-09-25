@@ -1,0 +1,10 @@
+# Claude Code ayarları (sadece yerel test için, sitede kullanılmıyor)
+.claude/
+
+# VS Code ayarları
+.vscode/
+
+# İşletim sistemi dosyaları
+.DS_Store
+Thumbs.db
+desktop.ini

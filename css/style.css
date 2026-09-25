@@ -1,0 +1,430 @@
+/* =========================================================
+   RENKLER VE TEMEL AYARLAR
+   Renkleri buradan değiştirirsen tüm sitede değişir.
+   ========================================================= */
+:root {
+  --navy: #2e4ba3;        /* ana lacivert: yazılar, butonlar */
+  --navy-soft: #5f75b7;   /* "Book Now" butonu */
+  --blue-bright: #0057e1; /* menüde aktif sekme */
+  --peach: #fbc988;       /* kayan yazı şeridi */
+  --lilac: #c2c9df;       /* iletişim altı banner zemini */
+  --pink: #edc7e3;        /* görsel yüklenirken zemin */
+  --bg: #f3f3f3;          /* sayfa arka planı */
+
+  --font-title: "Syne", sans-serif;
+  --font-text: "Quicksand", sans-serif;
+  --font-light: "Nunito Sans", sans-serif; /* Wix'teki "Avenir Light"ın ücretsiz muadili (randevu kartı) */
+
+  --header-h: 96px;
+
+  /* Wix'in kullandığı animasyon eğrileri */
+  --ease-reveal: cubic-bezier(0.645, 0.045, 0.355, 1);
+  --ease-fade: cubic-bezier(0.445, 0.05, 0.55, 0.95);
+  --ease-back: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  /* Menüye tıklayınca başlık sabit menünün altında kalmasın */
+  scroll-padding-top: var(--header-h);
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--navy);
+  font-family: var(--font-text);
+  font-weight: 400;          /* gövde metni normal; sadece vurgulu kelimeler kalın */
+  font-size: 15px;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+}
+strong { font-weight: 700; }
+
+img { display: block; max-width: 100%; }
+
+/* Dönerek gelen görseller animasyon başında sayfa dışına taşmasın */
+main { overflow-x: clip; }
+a { color: inherit; }
+
+.container {
+  width: min(1100px, 100% - 32px);
+  margin-inline: auto;
+}
+
+.hidden { display: none; }
+
+h1, h2 {
+  font-family: var(--font-title);
+  font-weight: 700;
+  margin: 0 0 24px;
+}
+h2 { font-size: clamp(32px, 4vw, 40px); letter-spacing: 0.02em; line-height: 1.2; }
+h3 { font-size: 15px; font-weight: 700; margin: 0 0 22px; }
+
+/* =========================================================
+   BUTONLAR
+   ========================================================= */
+.btn {
+  display: inline-block;
+  text-decoration: none;
+  font-family: var(--font-text);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: normal;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, transform 0.3s;
+}
+.btn-pill {
+  background: var(--navy);
+  color: var(--bg);
+  border: 1px solid var(--navy);
+  border-radius: 100px;
+  padding: 12px 40px;
+}
+.btn-pill:hover { background: transparent; color: var(--navy); }
+
+.btn-book {
+  font-family: var(--font-light);
+  font-weight: 300;
+  background: var(--navy-soft);
+  color: var(--bg);
+  border: 1px solid var(--navy-soft);
+  padding: 10px 32px;
+}
+.btn-book:hover { background: var(--navy); border-color: var(--navy); }
+
+/* =========================================================
+   MENÜ
+   ========================================================= */
+.site-header {
+  position: sticky;   /* kayarken üstte sabit kalır */
+  top: 0;
+  z-index: 100;
+  background: var(--bg);
+  height: var(--header-h);
+  transition: box-shadow 0.3s;
+}
+.site-header.scrolled { box-shadow: 0 2px 16px rgba(46, 75, 163, 0.08); }
+
+.header-inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo img { height: 80px; width: auto; }
+
+.main-nav { display: flex; gap: 6px; }
+.nav-link {
+  text-decoration: none;
+  color: var(--navy);
+  border: 1px solid var(--navy);
+  padding: 8px 26px;
+  font-size: 15px;
+  font-weight: 700;
+  transition: background-color 0.3s, color 0.3s;
+}
+.nav-link:hover,
+.nav-link.active { background: var(--blue-bright); border-color: var(--blue-bright); color: #fff; }
+
+.menu-toggle { display: none; }
+
+/* =========================================================
+   HERO
+   ========================================================= */
+.hero { padding: 120px 0 110px; text-align: center; }
+.hero-eyebrow { font-size: 18px; margin: 0 0 20px; }
+.hero h1 {
+  font-size: clamp(27px, 4.6vw, 51px);
+  line-height: 1.3;         /* g, p, y gibi harflerin kuyrukları kesilmesin */
+  padding-bottom: 0.1em;
+  letter-spacing: 0.05em;
+  max-width: 1000px;         /* ilk satır 954px, 2 satıra sığsın */
+  margin: 0 auto 40px;
+}
+/* Başlığı "when"den sonra bölen satır sonu; telefonda gerek yok, doğal kırılsın */
+@media (max-width: 700px) {
+  .hero h1 br { display: none; }
+}
+
+/* =========================================================
+   KAYAN YAZI ŞERİDİ (marquee)
+   ========================================================= */
+.marquee {
+  background: var(--peach);
+  overflow: hidden;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 60s linear infinite;
+}
+.marquee-track span {
+  white-space: nowrap;
+  font-size: 20px;
+  font-weight: 700;
+  padding-right: 40px;
+}
+.marquee-track b { font-size: 12px; margin-left: 32px; vertical-align: middle; }
+/* 4 kopya var; yarısı kadar (-50%) kayınca başa dönüyor, fark edilmiyor */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* =========================================================
+   GENİŞ GÖRSEL BANTLARI
+   ========================================================= */
+.banner { background: var(--pink); overflow: hidden; }
+.banner img { width: 100%; height: 100%; object-fit: cover; }
+.banner-hero { height: 363px; }
+.banner-hero img { object-position: bottom; }
+.banner-contact { height: 260px; background: var(--lilac); margin-top: 80px; }
+
+/* =========================================================
+   BÖLÜMLER
+   ========================================================= */
+.section { padding: 90px 0; }
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+.about-text p { margin: 0 0 22px; max-width: 585px; }
+/* Wix'teki gibi "Contact Now" butonları ortada */
+.section-cta { text-align: center; margin-top: 30px; }
+.about-photo { overflow: hidden; background: var(--pink); }
+.about-photo img { width: 100%; aspect-ratio: 638 / 552; object-fit: cover; }
+
+.services h2 { text-align: center; margin-bottom: 60px; }
+.service {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 60px;
+  align-items: start;
+  margin-bottom: 60px;
+}
+.service-img { background: var(--pink); }
+.service-img img { width: 100%; object-fit: cover; }
+.service ul { margin: 0 0 22px; padding-left: 20px; }
+.service p { margin: 0 0 22px; }
+
+.book { text-align: center; }
+.book-title { font-size: clamp(40px, 5vw, 56px); letter-spacing: 0.05em; }
+.book-card {
+  max-width: 560px;
+  margin: 40px auto 0;
+  padding: 24px 32px 32px;
+  border: 1px solid rgba(46, 75, 163, 0.2);
+  text-align: left;
+  font-family: var(--font-light);
+  font-weight: 300;
+  letter-spacing: normal;
+}
+.book-card h3 {
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 1.33;
+  margin: 0;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(46, 75, 163, 0.2); /* başlık altındaki ince çizgi */
+}
+.book-card p { font-size: 16px; line-height: 2; margin: 12px 0 20px; }
+
+.contact { padding-bottom: 0; }
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+}
+.contact-lead { font-family: var(--font-title); font-weight: 700; font-size: 24px; line-height: 1.5; margin: 0; }
+.form-title { font-size: 20px; font-weight: 700; margin: 0 0 20px; }
+.contact-form { display: grid; gap: 18px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.contact-form label { display: grid; gap: 6px; font-size: 16px; font-weight: 700; letter-spacing: normal; }
+.contact-form input,
+.contact-form textarea {
+  font: inherit;
+  font-weight: 400;
+  color: var(--navy);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--navy);
+  padding: 8px 0;
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.3s;
+}
+.contact-form input:focus,
+.contact-form textarea:focus { border-bottom-color: var(--blue-bright); }
+.contact-form label { grid-template-columns: auto 1fr; }
+.contact-form label > input,
+.contact-form label > textarea { grid-column: 1 / -1; }
+.req { color: #d9534f; justify-self: start; }
+.form-note { margin: -6px 0 0; opacity: 0.8; }
+/* Gönder'e basıldıktan sonra boş/yanlış kalan alanın çizgisi kırmızı olsun */
+.contact-form.submitted input:invalid,
+.contact-form.submitted textarea:invalid { border-bottom-color: #d9534f; }
+.contact-form .btn { justify-self: start; margin-top: 8px; }
+.form-status { margin: 0; min-height: 1.5em; }
+
+/* =========================================================
+   POLİTİKA SAYFALARI (gizlilik, iptal)
+   ========================================================= */
+.policy { padding: 80px 0 60px; }
+.policy .container { max-width: 760px; }
+.policy h1 { font-size: clamp(34px, 5vw, 51px); line-height: 1.2; letter-spacing: 0.03em; margin-bottom: 20px; }
+.policy .intro { font-size: 18px; margin: 0 0 40px; }
+.policy h2 { font-size: 22px; letter-spacing: 0; margin: 40px 0 12px; }
+.policy p { margin: 0 0 14px; }
+.back-link { display: inline-block; margin-top: 48px; text-decoration: none; }
+.back-link:hover { text-decoration: underline; }
+
+/* =========================================================
+   ALT BİLGİ
+   ========================================================= */
+.site-footer { padding: 60px 0 40px; }
+.footer-grid {
+  display: grid;
+  grid-template-columns: 180px 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+.footer-logo { width: 150px; }
+.footer-brand { font-family: var(--font-title); font-weight: 700; font-size: 42px; line-height: 1.2; margin: 0 0 12px; }
+/* Wix'te footer yazıları kalın (e-posta, KvK, linkler); sadece acil durum notu normal */
+.site-footer p,
+.site-footer a { font-weight: 700; letter-spacing: normal; }
+.site-footer p { margin: 0 0 6px; }
+.site-footer a { text-decoration: none; }
+.site-footer a:hover { text-decoration: underline; }
+.footer-links { display: grid; gap: 10px; font-size: 15px; }
+.footer-bottom { margin-top: 40px; }
+.site-footer .footer-disclaimer { font-weight: 400; font-size: 16px; margin-top: 12px; }
+.small { font-size: 13px; }
+
+/* =========================================================
+   KAYDIRINCA BELİREN ANİMASYONLAR
+   JS, eleman ekrana girince ona "is-visible" sınıfını ekler.
+   (.js sınıfı sadece JavaScript çalışıyorsa eklenir; JS kapalıysa
+   her şey normal görünür, hiçbir içerik gizli kalmaz.)
+   ========================================================= */
+
+/* fade: yavaşça belirme (Wix "FadeIn") */
+.js [data-anim="fade"] {
+  opacity: 0;
+  transition: opacity 1.2s var(--ease-fade);
+}
+
+/* reveal: alttan yukarı perde açılması (Wix "RevealIn") */
+.js [data-anim="reveal"] {
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 1.2s var(--ease-reveal);
+}
+
+/* drop: büyükten küçülerek yerine oturma (Wix "DropIn")
+   Kutu sabit kalır, içindeki fotoğraf küçülür; böylece sayfadan taşmaz. */
+.js [data-anim="drop"] {
+  opacity: 0;
+  transition: opacity 1s var(--ease-fade);
+}
+.js [data-anim="drop"] img {
+  transform: scale(1.4);
+  transition: transform 1.2s var(--ease-reveal);
+}
+.js [data-anim="drop"].is-visible img { transform: none; }
+
+/* turn: köşesinden dönerek, yaylanarak gelme (Wix "TurnIn") */
+.js [data-anim^="turn"] {
+  opacity: 0;
+  transition: opacity 0.6s ease-in, transform 1s var(--ease-back);
+}
+.js [data-anim="turn-left"]  { transform-origin: bottom left; transform: rotate(-50deg); }
+.js [data-anim="turn-right"] { transform-origin: top right;   transform: rotate(50deg); }
+
+/* Görünür olunca hepsi normal hâline döner */
+.js [data-anim].is-visible {
+  opacity: 1;
+  clip-path: inset(0 0 0 0);
+  transform: none;
+}
+
+/* Hareket hassasiyeti olan kullanıcılar için animasyonları kapat */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .marquee-track { animation: none; }
+  .js [data-anim] { opacity: 1; clip-path: none; transform: none; transition: none; }
+}
+
+/* =========================================================
+   TABLET VE TELEFON
+   ========================================================= */
+@media (max-width: 900px) {
+  :root { --header-h: 76px; }
+  .logo img { height: 60px; }
+
+  /* Hamburger buton */
+  .menu-toggle {
+    display: grid;
+    gap: 5px;
+    background: none;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+  }
+  .menu-toggle span {
+    width: 26px; height: 2px;
+    background: var(--navy);
+    transition: transform 0.3s, opacity 0.3s;
+  }
+  .menu-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .menu-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+  .menu-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* Açılır menü */
+  .main-nav {
+    position: absolute;
+    top: var(--header-h);
+    left: 0; right: 0;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+    background: var(--bg);
+    box-shadow: 0 12px 20px rgba(46, 75, 163, 0.08);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity 0.3s, transform 0.3s, visibility 0.3s;
+  }
+  .main-nav.open { opacity: 1; visibility: visible; transform: none; }
+  .nav-link { text-align: center; padding: 12px; }
+
+  .hero { padding: 70px 0 60px; }
+  .banner-hero { height: 220px; }
+  .banner-contact { height: 180px; }
+  .section { padding: 64px 0; }
+
+  .about-grid,
+  .contact-grid { grid-template-columns: 1fr; gap: 36px; }
+  .about-photo { order: -1; max-width: 420px; }
+
+  .service { grid-template-columns: 1fr; gap: 24px; }
+  .service-img { max-width: 220px; }
+
+  .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+  .footer-brand { font-size: 32px; }
+}
+
+@media (max-width: 520px) {
+  .form-row { grid-template-columns: 1fr; }
+  .book-card { padding: 28px 24px; }
+}
