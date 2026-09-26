@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin | Spes Therapy</title>
+  <link rel="icon" href="/images/logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Syne:wght@700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+
+  <!-- ============ GİRİŞ ============ -->
+  <main id="login-view" class="login" hidden>
+    <form class="login-card" id="login-form">
+      <img src="/images/logo.png" alt="Spes Therapy" class="login-logo">
+      <h1>Yönetim Paneli</h1>
+
+      <label>Kullanıcı adı
+        <input type="text" name="username" autocomplete="username" required>
+      </label>
+      <label>Şifre
+        <input type="password" name="password" autocomplete="current-password" required>
+      </label>
+
+      <button type="submit" class="btn">Giriş yap</button>
+      <p class="status" id="login-status" role="alert"></p>
+    </form>
+  </main>
+
+  <!-- ============ PANEL ============ -->
+  <div id="panel-view" hidden>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <span class="brand">Spes Therapy <small>Yönetim Paneli</small></span>
+        <div class="topbar-actions">
+          <a href="/" target="_blank" rel="noopener">Siteyi görüntüle ↗</a>
+          <button type="button" class="btn btn-outline" id="logout">Çıkış yap</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="panel">
+      <h1>Fotoğraflar</h1>
+      <p class="hint">
+        Değiştirmek istediğin fotoğrafın altındaki <strong>"Fotoğraf seç"</strong> butonuna bas, önizlemeyi kontrol et ve <strong>"Kaydet"</strong>e bas.
+        Kaydettikten sonra sitede görünmesi <strong>1–2 dakika</strong> sürer.
+      </p>
+
+      <!-- Kartlar js/admin.js tarafından oluşturulur -->
+      <div class="grid" id="photo-grid"></div>
+    </main>
+  </div>
+
+  <template id="photo-card">
+    <article class="card">
+      <div class="card-img"><img alt=""></div>
+      <div class="card-body">
+        <h2></h2>
+        <p class="card-note"></p>
+        <div class="card-actions">
+          <label class="btn btn-outline">
+            Fotoğraf seç
+            <input type="file" accept="image/jpeg,image/png,image/webp" hidden>
+          </label>
+          <button type="button" class="btn save" disabled>Kaydet</button>
+          <button type="button" class="link cancel" hidden>Vazgeç</button>
+        </div>
+        <p class="status" role="status"></p>
+      </div>
+    </article>
+  </template>
+
+  <script src="/admin/admin.js"></script>
+</body>
+</html>
