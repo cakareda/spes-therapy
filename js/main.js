@@ -1,5 +1,19 @@
 const CAL_LINK = "spestherapy/30min";
 
+// Sayfanın dili (<html lang="...">): form mesajları buna göre gösterilir
+const TR = document.documentElement.lang === "tr";
+const TEXT = TR
+  ? {
+      sending: "Gönderiliyor…",
+      sent: "Teşekkürler! Mesajınız gönderildi.",
+      error: "Bir sorun oluştu. Lütfen doğrudan spestherapy@gmail.com adresine yazın.",
+    }
+  : {
+      sending: "Sending…",
+      sent: "Thank you! Your message has been sent.",
+      error: "Something went wrong. Please email spestherapy@gmail.com directly.",
+    };
+
 let pending = [...document.querySelectorAll("[data-anim]")];
 let ticking = false;
 
@@ -78,6 +92,22 @@ navLinks.forEach((link) =>
   })
 );
 
+// Dil seçici: butona tıklayınca açılır, dışarı tıklayınca / Esc ile kapanır
+const langBtn = document.querySelector(".lang-btn");
+
+if (langBtn) {
+  const setLangOpen = (open) => langBtn.setAttribute("aria-expanded", open);
+
+  langBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    setLangOpen(langBtn.getAttribute("aria-expanded") !== "true");
+  });
+  document.addEventListener("click", () => setLangOpen(false));
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") setLangOpen(false);
+  });
+}
+
 (function (C, A, L) {
   let p = function (a, ar) { a.q.push(ar); };
   let d = C.document;
@@ -140,7 +170,7 @@ form?.addEventListener("submit", async (e) => {
   }
   const button = form.querySelector("button");
   button.disabled = true;
-  statusEl.textContent = "Sending…";
+  statusEl.textContent = TEXT.sending;
 
   try {
     const res = await fetch(form.action, {
@@ -150,11 +180,11 @@ form?.addEventListener("submit", async (e) => {
     });
     const data = await res.json();
     if (!data.success) throw new Error(data.message);
-    statusEl.textContent = "Thank you! Your message has been sent.";
+    statusEl.textContent = TEXT.sent;
     form.reset();
     form.classList.remove("submitted");
   } catch (err) {
-    statusEl.textContent = "Something went wrong. Please email spestherapy@gmail.com directly.";
+    statusEl.textContent = TEXT.error;
   } finally {
     button.disabled = false;
   }
