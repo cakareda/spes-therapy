@@ -201,6 +201,11 @@ h3 { font-size: 15px; font-weight: 700; margin: 0 0 22px; }
   max-width: 1000px;         /* ilk satır 954px, 2 satıra sığsın */
   margin: 0 auto 40px;
 }
+/* Türkçe başlık daha uzun: biraz küçük punto ve geniş alan ile 3 satıra sığar */
+.hero h1.hero-long {
+  font-size: clamp(24px, 3.6vw, 40px);
+  max-width: 900px;
+}
 /* Başlığı "when"den sonra bölen satır sonu; telefonda gerek yok, doğal kırılsın */
 @media (max-width: 700px) {
   .hero h1 br { display: none; }
