@@ -1,10 +1,10 @@
 /* =========================================================
    ADMIN PANELİ
    Giriş kontrolü ve fotoğraf yükleme sunucu tarafında
-   (netlify/functions/*) yapılır; bu dosya sadece arayüz.
+   (api/*) yapılır; bu dosya sadece arayüz.
    ========================================================= */
 
-// Değiştirilebilen fotoğraflar. "key" değerleri netlify/functions/upload.mjs ile aynı olmalı.
+// Değiştirilebilen fotoğraflar. "key" değerleri api/upload.mjs ile aynı olmalı.
 const PHOTOS = [
   { key: "hero-banner",        src: "/images/hero-banner.jpg",        title: "Ana sayfa geniş görsel",  note: "Kayan şeridin altındaki geniş görsel. Yatay fotoğraf seç.", maxSize: 2400, type: "image/jpeg" },
   { key: "ece",                src: "/images/ece.jpg",                title: "Hakkımda fotoğrafı",      note: "About Me bölümündeki fotoğraf.",                                maxSize: 1400, type: "image/jpeg" },
@@ -99,10 +99,10 @@ async function prepareImage(file, { maxSize, type }) {
   }
   ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-  // Sınırı (3.5 MB) aşarsa kaliteyi düşürerek tekrar dene
+  // Sınırı (3 MB) aşarsa kaliteyi düşürerek tekrar dene
   for (const quality of [0.85, 0.75, 0.65, 0.5]) {
     const dataUrl = canvas.toDataURL(type, quality);
-    if (dataUrl.length * 0.75 < 3.5 * 1024 * 1024) return dataUrl;
+    if (dataUrl.length * 0.75 < 3 * 1024 * 1024) return dataUrl;
   }
   throw new Error("too-large");
 }

@@ -3,8 +3,7 @@ import { checkCredentials, createSessionCookie, isConfigured, isSameOrigin, json
 
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
-export default async (req) => {
-  if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
+export async function POST(req) {
   if (!isSameOrigin(req)) return json({ error: "Forbidden" }, 403);
   if (!isConfigured()) return json({ error: "Admin panel is not configured yet." }, 500);
 
@@ -22,6 +21,5 @@ export default async (req) => {
   }
 
   return json({ ok: true }, 200, { "Set-Cookie": createSessionCookie() });
-};
+}
 
-export const config = { path: "/api/login" };

@@ -1,7 +1,7 @@
 // POST /api/upload  { slot, image: "data:image/jpeg;base64,..." }
 //
 // Seçilen fotoğrafı GitHub reposundaki aynı dosyanın üzerine kaydeder.
-// GitHub'a yeni commit gelince Netlify siteyi otomatik olarak yeniden yayınlar (~1-2 dk).
+// GitHub'a yeni commit gelince Vercel siteyi otomatik olarak yeniden yayınlar (~1-2 dk).
 import { isLoggedIn, isSameOrigin, json } from "../lib/auth.mjs";
 
 // Sadece bu dosyalar değiştirilebilir (başka bir yola yazmak mümkün değil)
@@ -12,17 +12,16 @@ const SLOTS = {
   "service-corporate":  { path: "images/service-corporate.jpg",  type: "image/jpeg" },
   "contact-banner":     { path: "images/contact-banner.jpg",     type: "image/jpeg" },
   "logo":               { path: "images/logo.png",               type: "image/png"  },
-};
+}
 
-const MAX_BYTES = 4 * 1024 * 1024; // Netlify fonksiyon istek sınırı ~6 MB (base64 ile)
+const MAX_BYTES = 3 * 1024 * 1024; // Vercel istek gövdesi sınırı 4.5 MB (base64 ile ~%33 büyür)
 
 const MAGIC = {
   "image/jpeg": (b) => b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff,
   "image/png":  (b) => b[0] === 0x89 && b[1] === 0x50 && b[2] === 0x4e && b[3] === 0x47,
-};
+}
 
-export default async (req) => {
-  if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
+export async function POST(req) {
   if (!isSameOrigin(req)) return json({ error: "Forbidden" }, 403);
   if (!isLoggedIn(req)) return json({ error: "Oturum süresi doldu, lütfen tekrar giriş yapın." }, 401);
 
@@ -41,7 +40,7 @@ export default async (req) => {
 
   const bytes = Buffer.from(match[2], "base64");
   if (bytes.length === 0 || bytes.length > MAX_BYTES) {
-    return json({ error: "Dosya çok büyük (en fazla 4 MB)." }, 413);
+    return json({ error: "Dosya çok büyük (en fazla 3 MB)." }, 413);
   }
   if (!MAGIC[slot.type](bytes)) return json({ error: "Dosya bozuk veya desteklenmiyor." }, 400);
 
@@ -82,6 +81,5 @@ export default async (req) => {
   }
 
   return json({ ok: true });
-};
+}
 
-export const config = { path: "/api/upload" };

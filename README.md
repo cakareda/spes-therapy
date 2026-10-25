@@ -32,7 +32,7 @@ python -m http.server 5500
 
 ## Deployment
 
-Deployed on Netlify. Every push to `main` is published automatically.
+Deployed on Vercel. Every push to `main` is published automatically.
 
 ---
 
